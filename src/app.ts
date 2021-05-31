@@ -1,24 +1,11 @@
 import './styles.scss';
-import Data from './assets/data.json';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'mapbox-gl';
 
-export class App {
-    private message: string;
-
-    constructor(msg: string) {
-      this.message = msg;
-    }
-
-    public printHello(id: string) {
-      const container = document.getElementById(id);
-      if (!!container) {
-        container.innerHTML = this.message;
-        const a = 'aaaa';
-      } else {
-        console.error(`<element id="${id}" ...> does not exist !`);
-      }
-    }
-}
-
-const appInstance = new App('Hello Webpack and TypeScript ♥');
-appInstance.printHello('app');
-console.log(Data);
+mapboxgl.accessToken = 'SET_YOUR_TOKEN_HERE';
+const map = new mapboxgl.Map({
+  container: 'map', // container ID
+  style: 'mapbox://styles/mapbox/streets-v11', // style URL
+  center: [-74.5, 40], // starting position [lng, lat]
+  zoom: 9 // starting zoom
+});
