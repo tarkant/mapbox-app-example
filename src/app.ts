@@ -12,3 +12,14 @@ const map = new mapboxgl.Map({
   center: [-74.5, 40], // starting position [lng, lat]
   zoom: 9 // starting zoom
 });
+
+fetch('https://api.techniknews.net/ipgeo/')
+  .then(resp => {
+    resp.json()
+      .then((json) => {
+        map.flyTo({
+          center: [json.lon, json.lat],
+          zoom: 14
+        });
+      });
+  });
