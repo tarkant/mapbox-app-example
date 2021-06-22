@@ -13,13 +13,36 @@ const map = new mapboxgl.Map({
   zoom: 9 // starting zoom
 });
 
-fetch('https://api.techniknews.net/ipgeo/')
-  .then(resp => {
-    resp.json()
-      .then((json) => {
-        map.flyTo({
-          center: [json.lon, json.lat],
-          zoom: 14
-        });
-      });
+/**
+ * Minimum options for our location request
+ */
+const options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+/**
+ * If the user accepts the location request
+ * @param pos: GeolocationPosition
+ */
+function success(pos) {
+  const crd = pos.coords;
+
+  // Use the coordinates to center the camera
+  map.flyTo({
+    center: [crd.longitude, crd.latitude],
+    zoom: 14
   });
+}
+
+/**
+ * If the user refuses the location request
+ * @param err: GeolocationPositionError
+ */
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+// Request the user's location via the notification
+navigator.geolocation.getCurrentPosition(success, error, options);
